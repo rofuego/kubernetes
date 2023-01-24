@@ -1,2 +1,2 @@
 # kubernetes
-Kubernetes architecture examples
+Kubernetes architecture and services examples

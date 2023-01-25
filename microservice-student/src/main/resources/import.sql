@@ -1,0 +1,2 @@
+INSERT INTO student (name, email, password) VALUES ('Roberto', 'roberto@email.com', 'secret_password')
+INSERT INTO student (name, email, password) VALUES ('Antonio', 'antonio@email.com', 'secret_password')

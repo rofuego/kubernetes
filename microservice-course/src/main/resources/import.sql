@@ -1,0 +1,1 @@
+INSERT INTO course (name) VALUES ('Programacion')

@@ -17,7 +17,7 @@ public class CourseDTO {
 
     private String name;
 
-    private List<CourseStudentDTO> studentsIds;
+    private List<StudentIdDTO> studentsIds;
 
     private List<StudentDTO> students;
 }

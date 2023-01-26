@@ -60,7 +60,14 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	@Transactional
 	public CourseDTO saveCourse(CourseDTO courseDTO) {
-		return modelMapper.map(courseRepository.save(modelMapper.map(courseDTO, CourseEntity.class)), CourseDTO.class);
+		CourseEntity courseEntity = courseRepository
+				.save(new CourseEntity(null, courseDTO.getName(), new ArrayList<>()));
+		return new CourseDTO(courseEntity.getId(), courseEntity.getName(),
+				courseEntity.getStudentsIds().stream()
+						.map(courseStudentEntity -> new StudentIdDTO(courseStudentEntity.getId(),
+								courseStudentEntity.getStudentId()))
+						.toList(),
+				new ArrayList<>());
 	}
 
 	@Override

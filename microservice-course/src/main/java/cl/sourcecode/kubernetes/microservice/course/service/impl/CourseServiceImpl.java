@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cl.sourcecode.kubernetes.microservice.course.client.StudentClientRest;
+import cl.sourcecode.kubernetes.microservice.course.feign.StudentClientRest;
 import cl.sourcecode.kubernetes.microservice.course.dto.CourseDTO;
 import cl.sourcecode.kubernetes.microservice.course.dto.StudentDTO;
 import cl.sourcecode.kubernetes.microservice.course.dto.StudentIdDTO;

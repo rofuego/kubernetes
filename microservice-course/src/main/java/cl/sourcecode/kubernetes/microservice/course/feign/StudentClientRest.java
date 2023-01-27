@@ -1,4 +1,4 @@
-package cl.sourcecode.kubernetes.microservice.course.client;
+package cl.sourcecode.kubernetes.microservice.course.feign;
 
 import cl.sourcecode.kubernetes.microservice.course.dto.StudentDTO;
 import org.springframework.cloud.openfeign.FeignClient;

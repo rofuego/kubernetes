@@ -27,4 +27,12 @@ public class CourseStudentEntity {
 
 	@Column(name = "student_id")
 	private Long studentId;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof CourseStudentEntity)) return false;
+		CourseStudentEntity courseStudentEntity = (CourseStudentEntity) obj;
+		return this.studentId != null && this.studentId.equals(courseStudentEntity.studentId);
+	}
 }

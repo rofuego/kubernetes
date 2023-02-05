@@ -21,5 +21,5 @@ public interface CourseService {
 
 	StudentDTO deleteStudentCourse(Long studentId, Long courseId);
 
-	CourseDTO getFullCourseById(Long courseId);
+	CourseDTO getCourseById(Long courseId);
 }

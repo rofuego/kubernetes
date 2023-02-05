@@ -26,4 +26,12 @@ public class CourseEntity {
     @JoinColumn(name = "course_id")
     private List<CourseStudentEntity> studentsIds;
 
+    public void addStudent(CourseStudentEntity courseStudentEntity) {
+        studentsIds.add(courseStudentEntity);
+    }
+
+    public void removeStudent(CourseStudentEntity courseStudentEntity) {
+        studentsIds.remove(courseStudentEntity);
+    }
+
 }

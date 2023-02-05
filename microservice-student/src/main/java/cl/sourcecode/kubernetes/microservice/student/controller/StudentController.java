@@ -38,7 +38,7 @@ public class StudentController {
         studentService.deleteStudent(studentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+  
     @GetMapping("/by-ids")
     public ResponseEntity<List<StudentDTO>> getStudentsByIdsList(@RequestParam List<Long> ids) {
         return new ResponseEntity<>(studentService.getStudentsByIdsList(ids), HttpStatus.OK);

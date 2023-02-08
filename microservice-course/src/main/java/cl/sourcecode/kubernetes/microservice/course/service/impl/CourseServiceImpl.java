@@ -1,8 +1,8 @@
 package cl.sourcecode.kubernetes.microservice.course.service.impl;
 
-import cl.sourcecode.kubernetes.microservice.course.dto.CourseDTO;
-import cl.sourcecode.kubernetes.microservice.course.dto.StudentDTO;
-import cl.sourcecode.kubernetes.microservice.course.dto.StudentIdDTO;
+import cl.sourcecode.kubernetes.microservice.course.dto.CourseDto;
+import cl.sourcecode.kubernetes.microservice.course.dto.StudentDto;
+import cl.sourcecode.kubernetes.microservice.course.dto.StudentIdDto;
 import cl.sourcecode.kubernetes.microservice.course.entity.CourseEntity;
 import cl.sourcecode.kubernetes.microservice.course.entity.CourseStudentEntity;
 import cl.sourcecode.kubernetes.microservice.course.feign.StudentClientRest;
@@ -31,30 +31,30 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CourseDTO> getAllCourses() {
+    public List<CourseDto> getAllCourses() {
         List<CourseEntity> coursesEntities = (List<CourseEntity>) courseRepository.findAll();
-        return coursesEntities.stream().map(courseEntity -> new CourseDTO(courseEntity.getId(), courseEntity.getName(),
+        return coursesEntities.stream().map(courseEntity -> new CourseDto(courseEntity.getId(), courseEntity.getName(),
                 courseEntity.getStudentsIds().stream().
-                        map(courseStudentEntity -> new StudentIdDTO(courseStudentEntity.getId(),
+                        map(courseStudentEntity -> new StudentIdDto(courseStudentEntity.getId(),
                                 courseStudentEntity.getStudentId())).toList(), new ArrayList<>())).toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CourseDTO getCourse(Long courseId) {
+    public CourseDto getCourse(Long courseId) {
         CourseEntity courseEntity = courseRepository.findById(courseId).get();
-        return new CourseDTO(courseEntity.getId(), courseEntity.getName(), courseEntity.getStudentsIds().stream()
-                .map(courseStudentEntity -> new StudentIdDTO(courseStudentEntity.getId(),
+        return new CourseDto(courseEntity.getId(), courseEntity.getName(), courseEntity.getStudentsIds().stream()
+                .map(courseStudentEntity -> new StudentIdDto(courseStudentEntity.getId(),
                         courseStudentEntity.getStudentId())).toList(), new ArrayList<>());
     }
 
     @Override
     @Transactional
-    public CourseDTO saveCourse(CourseDTO courseDTO) {
+    public CourseDto saveCourse(CourseDto courseDTO) {
         CourseEntity courseEntity = courseRepository.
                 save(new CourseEntity(null, courseDTO.getName(), new ArrayList<>()));
-        return new CourseDTO(courseEntity.getId(), courseEntity.getName(), courseEntity.getStudentsIds().stream()
-                .map(courseStudentEntity -> new StudentIdDTO(courseStudentEntity.getId(),
+        return new CourseDto(courseEntity.getId(), courseEntity.getName(), courseEntity.getStudentsIds().stream()
+                .map(courseStudentEntity -> new StudentIdDto(courseStudentEntity.getId(),
                         courseStudentEntity.getStudentId())).toList(), new ArrayList<>());
     }
 
@@ -67,39 +67,39 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public StudentDTO assignStudentCourse(StudentDTO studentDTO, Long courseId) {
-        CourseDTO courseDTO = getCourse(courseId);
-        StudentDTO serviceStudentDTO = studentClientRest.getStudent(studentDTO.getId());
+    public StudentDto assignStudentCourse(StudentDto studentDTO, Long courseId) {
+        CourseDto courseDTO = getCourse(courseId);
+        StudentDto serviceStudentDto = studentClientRest.getStudent(studentDTO.getId());
         CourseEntity courseEntity = modelMapper.map(courseDTO, CourseEntity.class);
         CourseStudentEntity courseStudentEntity = new CourseStudentEntity();
-        courseStudentEntity.setStudentId(serviceStudentDTO.getId());
+        courseStudentEntity.setStudentId(serviceStudentDto.getId());
         List<CourseStudentEntity> courseStudentEntityList = courseEntity.getStudentsIds();
         courseStudentEntityList.add(courseStudentEntity);
         courseEntity.setStudentsIds(courseStudentEntityList);
         courseRepository.save(courseEntity);
-        return serviceStudentDTO;
+        return serviceStudentDto;
     }
 
     @Override
     @Transactional
-    public StudentDTO saveStudentCourse(StudentDTO studentDTO, Long courseId) {
-        CourseDTO courseDTO = getCourse(courseId);
-        StudentDTO serviceStudentDTO = studentClientRest.saveStudent(studentDTO);
+    public StudentDto saveStudentCourse(StudentDto studentDTO, Long courseId) {
+        CourseDto courseDTO = getCourse(courseId);
+        StudentDto serviceStudentDto = studentClientRest.saveStudent(studentDTO);
         CourseEntity courseEntity = modelMapper.map(courseDTO, CourseEntity.class);
         CourseStudentEntity courseStudentEntity = new CourseStudentEntity();
-        courseStudentEntity.setStudentId(serviceStudentDTO.getId());
+        courseStudentEntity.setStudentId(serviceStudentDto.getId());
         List<CourseStudentEntity> courseStudentEntityList = courseEntity.getStudentsIds();
         courseStudentEntityList.add(courseStudentEntity);
         courseEntity.setStudentsIds(courseStudentEntityList);
         courseRepository.save(courseEntity);
-        return serviceStudentDTO;
+        return serviceStudentDto;
     }
 
     @Override
     @Transactional
-    public StudentDTO deleteStudentCourse(Long studentId, Long courseId) {
-        CourseDTO courseDTO = getCourse(courseId);
-        StudentDTO studentDTO = studentClientRest.getStudent(studentId);
+    public StudentDto deleteStudentCourse(Long studentId, Long courseId) {
+        CourseDto courseDTO = getCourse(courseId);
+        StudentDto studentDTO = studentClientRest.getStudent(studentId);
         CourseEntity courseEntity = modelMapper.map(courseDTO, CourseEntity.class);
         CourseStudentEntity courseStudentEntity = new CourseStudentEntity();
         courseStudentEntity.setStudentId(studentDTO.getId());
@@ -109,17 +109,17 @@ public class CourseServiceImpl implements CourseService {
                 courseStudentEntity.setId(entity.getId());
             }
         }
-        courseEntity.removeStudent(courseStudentEntity);
+        courseEntity.getStudentsIds().remove(courseStudentEntity);
         courseRepository.save(courseEntity);
         return studentDTO;
     }
 
     @Override
-    public CourseDTO getCourseById(Long courseId) {
-        CourseDTO courseDTO = modelMapper.map(courseRepository.findById(courseId).get(), CourseDTO.class);
-        List<Long> listIds = courseDTO.getStudentsIds().stream().map(StudentIdDTO::getStudentId).toList();
-        List<StudentDTO> listStudentDTOs = studentClientRest.getStudentsByIds(listIds);
-        courseDTO.setStudents(listStudentDTOs);
+    public CourseDto getCourseById(Long courseId) {
+        CourseDto courseDTO = modelMapper.map(courseRepository.findById(courseId).get(), CourseDto.class);
+        List<Long> listIds = courseDTO.getStudentsIds().stream().map(StudentIdDto::getStudentId).toList();
+        List<StudentDto> listStudentDtos = studentClientRest.getStudentsByIds(listIds);
+        courseDTO.setStudents(listStudentDtos);
         return courseDTO;
     }
 

@@ -16,5 +16,5 @@ public interface StudentClientRest {
     public StudentDto saveStudent(@RequestBody StudentDto studentDTO);
 
     @GetMapping("/students/by-ids")
-    public List<StudentDto> getStudentsByIds(@RequestParam List<Long> ids);
+    public List<StudentDto> getAllStudentsByIds(@RequestParam List<Long> ids);
 }

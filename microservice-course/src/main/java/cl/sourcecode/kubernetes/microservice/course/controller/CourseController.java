@@ -26,7 +26,7 @@ public class CourseController {
 
     @GetMapping("/{courseId}")
     public ResponseEntity<CourseDto> getCourse(@PathVariable Long courseId) {
-        return new ResponseEntity<>(courseService.getCourseById(courseId), HttpStatus.OK);
+        return new ResponseEntity<>(courseService.getCourse(courseId), HttpStatus.OK);
     }
 
     @PostMapping("")

@@ -20,6 +20,4 @@ public interface CourseService {
     StudentDto saveStudentCourse(StudentDto studentDTO, Long courseId);
 
     StudentDto deleteStudentCourse(Long studentId, Long courseId);
-
-    CourseDto getCourseById(Long courseId);
 }
